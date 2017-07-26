@@ -29,7 +29,7 @@ class Battle:
         print()
 
     def battle_options(self, attacker, defender):
-        print("Your turn {}".format(attacker.name))
+        print("Your turn {}".format(attacker.trainer.name))
         print("""What will you do?
         A: Fight
         B: Item""")

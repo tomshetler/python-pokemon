@@ -15,14 +15,23 @@ def team_selection(owner):
     owner.pokemon_list.append(available_pokemon[poke_num])
     available_pokemon.pop(poke_num)
 
-
 def simulate_team_selection(owner):
-    com_poke_num = random.randint(0, len(available_pokemon))
+    if len(available_pokemon) > 1:
+        com_poke_num = random.randint(0, len(available_pokemon))
+    else:
+        com_poke_num = 0
     available_pokemon[com_poke_num].trainer = owner
     owner.pokemon_list.append(available_pokemon[com_poke_num])
     available_pokemon.pop(com_poke_num)
 
-bulbasaur = pokemon.Pokemon("Bulbasaur", "Grass", 50, {1: {"Tackle": 10}, 2: {"Growl": 5}}, None)
+def display_fighter_stats():
+    print()
+    red_choice.display_stats()
+    print()
+    blue_choice.display_stats()
+    print()
+
+bulbasaur = pokemon.Pokemon("Bulbasaur", "Grass", 50, {1: {"Tackle": 10}, 2: {"Growl": 5}, 3: {"Vine Whip": 15}}, None)
 charmander = pokemon.Pokemon("Charmander", "Fire", 50, {1: {"Scratch": 10}, 2: {"Tail-Whip": 5}}, None)
 squirtle = pokemon.Pokemon("Squirtle", "Water", 50, {1: {"Tackle": 10}, 2: {"Growl": 5}}, None)
 pikachu = pokemon.Pokemon("Pikachu", "Electric", 50, {1: {"Thundershock": 20}, 2: {"Tail-Whip": 5}}, None)
@@ -46,12 +55,8 @@ print()
 
 red_choice = red.choose_pokemon()
 blue_choice = blue.simulate_choose_pokemon()
-print()
-red_choice.display_stats()
-print()
-blue_choice.display_stats()
-print()
 new_battle = battle.Battle(red_choice, blue_choice)
+display_fighter_stats()
 new_battle.display_fight()
 print()
 
@@ -74,6 +79,8 @@ while not result and pokemon_left:
             result = False
             blue_choice = blue.simulate_choose_pokemon()
             new_battle = battle.Battle(red_choice, blue_choice)
+            display_fighter_stats()
+            new_battle.display_fight()
         else:
             print("RED WINS!")
             pokemon_left = False
@@ -83,6 +90,8 @@ while not result and pokemon_left:
             result = False
             red_choice = red.choose_pokemon()
             new_battle = battle.Battle(red_choice, blue_choice)
+            display_fighter_stats()
+            new_battle.display_fight()
         else:
             print("BLUE WINS!")
             pokemon_left = False
