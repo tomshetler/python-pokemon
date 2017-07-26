@@ -1,29 +1,6 @@
 import random
-
-# First, we need a class to create the fighters
-
-class Pokemon:
-    def __init__(self, name, type, health, attacks):
-        self.name = name
-        self.type = type
-        self.health = health
-        self.attacks = attacks
-
-    def attack(self, attack_method):
-        if attack_method in self.attacks:
-            damage = self.attacks[attack_method]
-        return damage
-
-    def display_stats(self):
-        print("Name: {}".format(self.name))
-        print("Type: {}".format(self.type))
-        print("Health: {}".format(self.health))
-        for attack_num in self.attacks:
-            for attack, damage in self.attacks[attack_num].items():
-                print("{}: {}".format(attack, damage))
-
-
-# Now we need a class to create the fight itself
+import pokemon
+import trainer
 
 class Battle:
     def __init__(self, pokemon_A, pokemon_B):
@@ -88,28 +65,45 @@ class Battle:
         else:
             return False
 
-bulbasaur = Pokemon("Bulbasaur", "Grass", 50, {1: {"Tackle": 10}, 2: {"Growl": 5}})
-charmander = Pokemon("Charmander", "Fire", 50, {1: {"Scratch": 10}, 2: {"Tail-Whip": 5}})
-# squirtle = Pokemon("Squirtle", "Water", 100, {"Tackle": 10, "Growl": 5})
+bulbasaur = pokemon.Pokemon("Bulbasaur", "Grass", 50, {1: {"Tackle": 10}, 2: {"Growl": 5}}, None)
+charmander = pokemon.Pokemon("Charmander", "Fire", 50, {1: {"Scratch": 10}, 2: {"Tail-Whip": 5}}, None)
+squirtle = pokemon.Pokemon("Squirtle", "Water", 100, {"Tackle": 10, "Growl": 5}, None)
 
-# available_pokemon = [bulbasaur, charmander, squirtle]
+available_pokemon = [bulbasaur, charmander, squirtle]
 
-bulbasaur.display_stats()
+red = trainer.Trainer("Red", [], [])
+blue = trainer.Trainer("Blue", [], [])
+
+print("WELCOME TO POKEMON!")
+print("Choose a fighter: ")
+count = 0
+for pokemon in available_pokemon:
+    print("{}: {}".format(count, pokemon.name))
+    count += 1
+poke_num = int(input())
+red.pokemon_list.append(available_pokemon[poke_num])
+
+for pokemon in red.pokemon_list:
+    print(pokemon.name)
+
+choice = red.choose_pokemon()
+
+choice.display_stats()
 print()
 charmander.display_stats()
 print()
-battle = Battle(bulbasaur, charmander)
+battle = Battle(choice, charmander)
 battle.display_fight()
 print()
 
 turn = 0
 
-result = battle.determine_winner(bulbasaur, charmander)
+result = battle.determine_winner(choice, charmander)
 
 while not result:
     if turn % 2 == 0:
-        battle.battle_options(bulbasaur, charmander)
+        battle.battle_options(choice, charmander)
     else:
-        battle.simulate_battle_options(charmander, bulbasaur)
-    result = battle.determine_winner(bulbasaur, charmander)
+        battle.simulate_battle_options(charmander, choice)
+    result = battle.determine_winner(choice, charmander)
     turn += 1
