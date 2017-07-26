@@ -34,9 +34,12 @@ blue = trainer.Trainer("Blue", [], {"Potions": 3})
 
 print("WELCOME TO POKEMON!")
 print()
+print("How many Pokemon on each team?")
+number_of_figters = int(input())
 
-team_selection(red)
-simulate_team_selection(blue)
+for i in range(0, number_of_figters):
+    team_selection(red)
+    simulate_team_selection(blue)
 
 
 print()
@@ -56,10 +59,31 @@ turn = 0
 
 result = new_battle.determine_winner(red_choice, blue_choice)
 
-while not result:
+pokemon_left = True
+
+while not result and pokemon_left:
     if turn % 2 == 0:
         new_battle.battle_options(red_choice, blue_choice)
     else:
         new_battle.simulate_battle_options(blue_choice, red_choice)
+    # Check to see if the current pokemon are still alive
     result = new_battle.determine_winner(red_choice, blue_choice)
+    if result and red_choice.health > blue_choice.health:
+        blue_fighter_count = len(blue.pokemon_list)
+        if blue_fighter_count > 0:
+            result = False
+            blue_choice = blue.simulate_choose_pokemon()
+            new_battle = battle.Battle(red_choice, blue_choice)
+        else:
+            print("RED WINS!")
+            pokemon_left = False
+    elif result and red_choice.health < blue_choice.health:
+        red_fighter_count = len(red.pokemon_list)
+        if red_fighter_count > 0:
+            result = False
+            red_choice = red.choose_pokemon()
+            new_battle = battle.Battle(red_choice, blue_choice)
+        else:
+            print("BLUE WINS!")
+            pokemon_left = False
     turn += 1

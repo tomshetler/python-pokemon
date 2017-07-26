@@ -14,6 +14,7 @@ class Trainer:
             count += 1
         pokemon_choice = int(input())
         selection = self.pokemon_list[pokemon_choice]
+        self.pokemon_list.pop(pokemon_choice)
         print("{} has chosen: {}".format(self.name, selection.name))
         return selection
 
@@ -21,6 +22,7 @@ class Trainer:
         # pokemon_choice = random.randint(0, len(self.pokemon_list))
         pokemon_choice = 0
         selection = self.pokemon_list[pokemon_choice]
+        self.pokemon_list.pop(pokemon_choice)
         print("{} has chosen: {}".format(self.name, selection.name))
         return selection
 
