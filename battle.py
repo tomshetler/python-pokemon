@@ -14,13 +14,18 @@ class Battle:
             for attack, damage in attacker.attacks[attack_method].items():
                 defender.health -= damage
                 print("{} uses {} on {}".format(attacker.name, attack, defender.name))
-                print("{} now has {} health remaining".format(defender.name, defender.health))
+                if defender.health <= 0:
+                    print("{} has fainted!".format(defender.name))
+                else:
+                    print("{} now has {} health remaining".format(defender.name, defender.health))
                 print()
 
     def battle_item(self, attacker):
+        attacker.trainer.items_list["Potions"] -= 1
         attacker.health += 10
-        print("{} uses a potion".format(attacker.name))
+        print("{} uses a potion".format(attacker.trainer.name))
         print("{}'s health has now risen to {}".format(attacker.name, attacker.health))
+        print("{} now has {} items left".format(attacker.trainer.name, attacker.trainer.items_list["Potions"]))
         print()
 
     def battle_options(self, attacker, defender):
@@ -35,9 +40,13 @@ class Battle:
                 for attack_name in attacker.attacks[attack_num]:
                     print("{}: {}".format(attack_num, attack_name))
             attack_method = int(input())
-            battle.battle_attack(attack_method, attacker, defender)
+            self.battle_attack(attack_method, attacker, defender)
         elif option == "B":
-            battle.battle_item(attacker)
+            if attacker.trainer.items_list["Potions"] > 0:
+                self.battle_item(attacker)
+            else:
+                print("Not an option!")
+                self.battle_options(attacker, defender)
 
     def simulate_battle_options(self, attacker, defender):
         choice = random.randint(1, 2)
@@ -48,9 +57,13 @@ class Battle:
             option = "B"
         if option == "A":
             attack_method = random.randint(1, 2)
-            battle.battle_attack(attack_method, attacker, defender)
+            self.battle_attack(attack_method, attacker, defender)
         elif option == "B":
-            battle.battle_item(attacker)
+            if attacker.trainer.items_list["Potions"] > 0:
+                self.battle_item(attacker)
+            else:
+                print("Not an option!")
+                self.simulate_battle_options(attacker, defender)
 
 
     def determine_winner(self, fighter_A, fighter_B):

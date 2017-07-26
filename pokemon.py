@@ -15,6 +15,7 @@ class Pokemon:
         print("Name: {}".format(self.name))
         print("Type: {}".format(self.type))
         print("Health: {}".format(self.health))
+        print("Trainer: {}".format(self.trainer.name))
         for attack_num in self.attacks:
             for attack, damage in self.attacks[attack_num].items():
                 print("{}: {}".format(attack, damage))
